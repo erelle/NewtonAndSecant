@@ -5,11 +5,12 @@
 
 import math
 import sympy
-import decimal
 
 epsilon=0.0001
 def Pol(x):
     return x**3-x-1
+def Pol1(x):
+    return x**3-math.cos(x)
 Range1=(1,2)
 Range2=(0,1)
 
@@ -34,7 +35,7 @@ def NewtonRaphson(polinom,Range,epsilon):
     a=Range[0]
     b=Range[1]
     xr0=(a+b)/2
-    fxr = Pol(xr0)
+    fxr = polinom(xr0)
     fdxr = dfx(xr0)
     diff=100
     xr=xr0
@@ -42,7 +43,7 @@ def NewtonRaphson(polinom,Range,epsilon):
     while diff>epsilon:
         i+=1
         xr1=FXR(fxr,fdxr,xr)
-        fxr = Pol(xr1)
+        fxr = polinom(xr1)
         fdxr = dfx(xr1)
         diff=xr-xr1
         xr=xr1
@@ -52,9 +53,20 @@ NewtonRaphson(Pol,Range1,epsilon)
 
 def secant_method (polinom,Range,epsilon):
     print("secant_method:")
-    a = Range[0]
-    b = Range[1]
+    x0 = Range[0]
+    x1 = Range[1]
+    fx=polinom(x0)
+    diff=1
+    print("xi=",x0, " xi+1=",x1, " f(xi)=",fx)
+    while diff>epsilon:
+        nextx=(x0*polinom(x1)-x1*polinom(x0))/(polinom(x1)-polinom(x0))
+        x0=x1
+        fx= polinom(x0)
+        diff=x1-nextx
+        x1=nextx
+        print("xi=",x0, " xi+1=",x1, " f(xi)=",fx)
+    print("solution=", x1)
 
 
-secant_method(Pol, Range2, epsilon)
+secant_method(Pol1, Range2, epsilon)
 
